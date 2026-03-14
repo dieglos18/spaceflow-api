@@ -34,7 +34,7 @@ export class SpacesService {
       this.errorLogger.logError(`${CONTEXT}.create`, error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2003') throw new NotFoundException('Place not found');
-        if (error.code === 'P2002') throw new ConflictException('Space with same unique field already exists');
+        if (error.code === 'P2002') throw new ConflictException('A space with this name already exists in this place');
       }
       throw new InternalServerErrorException('Failed to create space');
     }
@@ -76,7 +76,7 @@ export class SpacesService {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') throw new NotFoundException(`Space with id ${id} not found`);
         if (error.code === 'P2003') throw new NotFoundException('Place not found');
-        if (error.code === 'P2002') throw new ConflictException('Space with same unique field already exists');
+        if (error.code === 'P2002') throw new ConflictException('A space with this name already exists in this place');
       }
       throw new InternalServerErrorException('Failed to update space');
     }

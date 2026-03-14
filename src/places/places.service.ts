@@ -27,7 +27,7 @@ export class PlacesService {
     } catch (error) {
       this.errorLogger.logError(`${CONTEXT}.create`, error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') throw new ConflictException('Place with same unique field already exists');
+        if (error.code === 'P2002') throw new ConflictException('A place with this name already exists');
       }
       throw new InternalServerErrorException('Failed to create place');
     }
@@ -66,7 +66,7 @@ export class PlacesService {
       this.errorLogger.logError(`${CONTEXT}.update`, error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') throw new NotFoundException(`Place with id ${id} not found`);
-        if (error.code === 'P2002') throw new ConflictException('Place with same unique field already exists');
+        if (error.code === 'P2002') throw new ConflictException('A place with this name already exists');
       }
       throw new InternalServerErrorException('Failed to update place');
     }
