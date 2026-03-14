@@ -50,7 +50,7 @@ export class ReservationsService {
         timesOverlap(dto.startTime, dto.endTime, reservation.startTime, reservation.endTime),
       );
       if (hasOverlap) {
-        throw new ConflictException('Time slot overlaps with an existing reservation');
+        throw new ConflictException('Space already reserved in this time slot');
       }
 
       const { weekStart, weekEnd } = getWeekBounds(startOfDay);
@@ -158,7 +158,7 @@ export class ReservationsService {
         timesOverlap(startTime, endTime, reservation.startTime, reservation.endTime),
       );
       if (hasOverlap) {
-        throw new ConflictException('Time slot overlaps with an existing reservation');
+        throw new ConflictException('Space already reserved in this time slot');
       }
 
       const { weekStart, weekEnd } = getWeekBounds(startOfDay);

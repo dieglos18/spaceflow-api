@@ -44,7 +44,7 @@ export class ReservationsController {
   @ApiResponse({ status: 400, description: 'Validation failed or endTime before startTime.' })
   @ApiResponse({ status: 401, description: 'Missing or invalid Bearer token.' })
   @ApiResponse({ status: 404, description: 'Space not found.' })
-  @ApiResponse({ status: 409, description: 'Time slot overlaps or client exceeds 3 reservations per week.' })
+  @ApiResponse({ status: 409, description: 'Space already reserved in this time slot or client exceeds 3 reservations per week.' })
   create(@Body() dto: CreateReservationDto) {
     return this.reservationsService.create(dto);
   }
@@ -87,7 +87,7 @@ export class ReservationsController {
   @ApiResponse({ status: 400, description: 'Validation failed or endTime before startTime.' })
   @ApiResponse({ status: 401, description: 'Missing or invalid Bearer token.' })
   @ApiResponse({ status: 404, description: 'Reservation or space not found.' })
-  @ApiResponse({ status: 409, description: 'Time slot overlaps or client exceeds 3 reservations per week.' })
+  @ApiResponse({ status: 409, description: 'Space already reserved in this time slot or client exceeds 3 reservations per week.' })
   update(@Param('id') id: string, @Body() dto: UpdateReservationDto) {
     return this.reservationsService.update(id, dto);
   }
