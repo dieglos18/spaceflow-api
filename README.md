@@ -37,11 +37,13 @@ Backend system for managing coworking space reservations with IoT telemetry inte
    cp .env.example .env
    ```
 
-3. Run PostgreSQL with Docker
+3. Run PostgreSQL and MQTT broker with Docker
 
    ```bash
    docker compose up -d
    ```
+
+   This starts Postgres (port 5432) and Eclipse Mosquitto (port 1883). Set `MQTT_BROKER_URL=mqtt://localhost:1883` in `.env` to consume telemetry (optional).
 
 4. Run database migrations
 
