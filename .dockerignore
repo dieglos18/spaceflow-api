@@ -1,0 +1,17 @@
+node_modules
+dist
+build
+.env
+.env.*
+.git
+.gitignore
+*.log
+coverage
+.nyc_output
+.idea
+.vscode
+.cursor
+*.md
+!README.md
+Dockerfile
+.dockerignore

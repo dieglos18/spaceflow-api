@@ -11,6 +11,8 @@ services:
       POSTGRES_DB: spaceflow
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - spaceflow-network
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -20,6 +22,33 @@ services:
       - "1883:1883"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    networks:
+      - spaceflow-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spaceflow-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://user:password@postgres:5432/spaceflow"
+      MQTT_BROKER_URL: "mqtt://mosquitto:1883"
+      PORT: "3000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - mosquitto
+    networks:
+      - spaceflow-network
 
 volumes:
   postgres_data:
+
+networks:
+  spaceflow-network:
+    name: spaceflow-network
+    driver: bridge
