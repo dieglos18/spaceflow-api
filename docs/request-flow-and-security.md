@@ -48,54 +48,29 @@ sequenceDiagram
 
 ## Security parameters and configuration
 
+Summary of what the API already implements:
+
 ### 1. Authentication (Bearer token)
 
-- **Mechanism**: API key–style Bearer token in the `Authorization` header.
-- **Env variable**: `AUTH_BEARER_TOKEN` (required for protected routes).
-- **Usage**: Send `Authorization: Bearer <AUTH_BEARER_TOKEN>` on every request to protected endpoints.
-- **Protected routes**: All under `/places`, `/spaces`, `/reservations`, `/telemetry`, and `GET /protected`. Public: `GET /`, `GET /health`.
-
-| Parameter | Description | Example / recommendation |
-|-----------|-------------|---------------------------|
-| `AUTH_BEARER_TOKEN` | Secret token; must match exactly. | Use a long, random value in production; never commit to git. |
+- **Bearer token** in `Authorization` header; secret comes from `AUTH_BEARER_TOKEN`.
+- **Protected routes**: `/places`, `/spaces`, `/reservations`, `/telemetry`, `GET /protected`. **Public**: `GET /`, `GET /health`.
+- Invalid or missing token → **401 Unauthorized**.
 
 ### 2. Input validation and sanitization
 
-- **Global ValidationPipe** (in `main.ts`):
-  - **`whitelist: true`**: Removes any property not defined on the DTO (prevents mass assignment).
-  - **`transform: true`**: Coerces types (e.g. query string `"10"` → number) according to DTO decorators.
-
-| Parameter | Purpose |
-|-----------|--------|
-| `whitelist` | Only allow DTO-defined fields; ignore extra payload. |
-| `transform` | Type coercion so validators receive the expected types. |
+- **Global ValidationPipe** in `main.ts` with **`whitelist: true`** (strips properties not defined on DTOs) and **`transform: true`** (coerces query/params to the types declared in DTOs). Invalid input → **400 Bad Request**.
 
 ### 3. Environment and secrets
 
-- **Do not commit** `.env` or any file containing real tokens or DB URLs.
-- **Use** `.env.example` as a template only (no real secrets).
+- Config is read from **`.env`** (not committed); **`.env.example`** documents variables: `AUTH_BEARER_TOKEN`, `DATABASE_URL`, `MQTT_BROKER_URL`, `PORT`.
 
-| Variable | Sensitivity | Notes |
-|----------|-------------|--------|
-| `AUTH_BEARER_TOKEN` | Secret | Required for protected endpoints; rotate in production. |
-| `DATABASE_URL` | Secret | Contains DB credentials; use strong password. |
-| `MQTT_BROKER_URL` | Config | Optional; internal or secured in production. |
-| `PORT` | Config | Non-sensitive. |
+### 4. Docker runtime
 
-### 4. Docker runtime security
+- API container runs as **non-root** user `nestjs` (UID 1001). Image is **multi-stage**: final image has only production deps and compiled output, no dev tools or source.
 
-- **User**: The API container runs as non-root user `nestjs` (UID 1001), reducing impact of container escape or path traversal.
-- **Image**: Multi-stage build; final image has no dev dependencies or source, only runtime assets.
+### 5. Error handling and logging
 
-### 5. HTTP and transport (recommendations)
-
-- **TLS**: In production, put the API behind a reverse proxy (e.g. Nginx, Traefik) or load balancer that terminates HTTPS. The diagram above does not change; only the transport is encrypted.
-- **CORS**: Configure `app.enableCors(...)` in `main.ts` if the frontend is on another origin; restrict origins in production.
-
-### 6. Error handling and information disclosure
-
-- **Known errors**: 400, 401, 404, 409 return clear, client-safe messages (e.g. “Space already reserved in this time slot”).
-- **Logging**: Internal errors are logged server-side (e.g. via `ErrorLoggerService`); stack traces are not sent to the client on 500.
+- **4xx/5xx**: 400, 401, 404, 409 return clear, client-safe messages (e.g. “Space already reserved in this time slot”). **Server errors**: logged via `ErrorLoggerService`; stack traces are not returned in the response body.
 
 ---
 
