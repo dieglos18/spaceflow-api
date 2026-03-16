@@ -2,15 +2,6 @@
 
 Backend for coworking space reservations and IoT telemetry.
 
-## Stack
-
-- **Runtime & framework:** Node.js, NestJS (TypeScript).
-- **Database:** PostgreSQL; Prisma ORM for schema, migrations, and queries.
-- **API:** REST with Swagger (OpenAPI), Bearer token auth, global validation (class-validator).
-- **IoT:** MQTT (Eclipse Mosquitto); consumer subscribes to telemetry topics and persists readings.
-- **Containers:** Docker and Docker Compose (API, Postgres, Mosquitto); optional shared network for a frontend in another repo.
-- **Tests:** Jest (unit, integration, E2E with Supertest).
-
 ## Run the project
 
 ### Option A: Full stack in Docker
@@ -91,3 +82,13 @@ Protected endpoints need `Authorization: Bearer <AUTH_BEARER_TOKEN>` (see `.env.
 
 - [Database Schema](docs/database-schema.md) — Tables, relations, ER diagram.
 - [Request Flow & Security](docs/request-flow-and-security.md) — How a request is handled and security settings.
+
+
+## Stack
+
+- **Runtime & framework:** Node.js, NestJS (TypeScript).
+- **Database:** PostgreSQL; Prisma ORM for schema, migrations, and queries.
+- **API:** REST with Swagger (OpenAPI), Bearer token auth, global validation (class-validator).
+- **IoT:** MQTT (Eclipse Mosquitto); consumer subscribes to telemetry topics and persists readings.
+- **Containers:** Docker and Docker Compose (API, Postgres, Mosquitto); optional shared network for a frontend in another repo.
+- **Tests:** Jest (unit, integration, E2E with Supertest).
