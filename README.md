@@ -1,6 +1,15 @@
 # SpaceFlow API
 
-Backend for coworking space reservations and IoT telemetry (NestJS, Prisma, PostgreSQL, MQTT).
+Backend for coworking space reservations and IoT telemetry.
+
+## Stack
+
+- **Runtime & framework:** Node.js, NestJS (TypeScript).
+- **Database:** PostgreSQL; Prisma ORM for schema, migrations, and queries.
+- **API:** REST with Swagger (OpenAPI), Bearer token auth, global validation (class-validator).
+- **IoT:** MQTT (Eclipse Mosquitto); consumer subscribes to telemetry topics and persists readings.
+- **Containers:** Docker and Docker Compose (API, Postgres, Mosquitto); optional shared network for a frontend in another repo.
+- **Tests:** Jest (unit, integration, E2E with Supertest).
 
 ## Run the project
 
@@ -54,7 +63,7 @@ Backend for coworking space reservations and IoT telemetry (NestJS, Prisma, Post
 
 ## Seed
 
-Populates the DB with one place (Darien Technology Coworking), five spaces, one reservation per space, and publishes one MQTT telemetry message per space. Run migrations first, then:
+Populates the DB with one place (Darien Technology Coworking), five spaces, 2–3 reservations per space, and publishes one MQTT telemetry message per space. Run migrations first, then:
 
 ```bash
 npx prisma db seed
