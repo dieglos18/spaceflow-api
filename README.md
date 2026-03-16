@@ -21,6 +21,11 @@ Backend for coworking space reservations and IoT telemetry.
    ```bash
    docker compose run --rm api npx prisma migrate deploy
    ```
+
+4. **Seed** — One place, five spaces, 2–3 reservations per space, one MQTT telemetry message per space. For telemetry to be stored, the API must be running when you run the seed.
+   ```bash
+   docker compose run --rm api npx prisma db seed
+   ```
    API: `http://localhost:3000` · Swagger: `http://localhost:3000/api`
 
 ---
@@ -44,23 +49,16 @@ Backend for coworking space reservations and IoT telemetry.
    npx prisma migrate dev
    ```
 
-4. **Start the API**
+4. **Seed** — One place, five spaces, 2–3 reservations per space, one MQTT telemetry message per space. For telemetry to be stored, the broker and API must be running when you run the seed.
+   ```bash
+   npx prisma db seed
+   ```
+
+5. **Start the API**
    ```bash
    npm run start:dev
    ```
    API: `http://localhost:3000` · Swagger: `http://localhost:3000/api`
-
----
-
-## Seed
-
-Populates the DB with one place (Darien Technology Coworking), five spaces, 2–3 reservations per space, and publishes one MQTT telemetry message per space. Run migrations first, then:
-
-```bash
-npx prisma db seed
-```
-
-Or: `npm run prisma:seed`. For telemetry rows to be stored, the MQTT broker (and the API) must be running when you run the seed so the API consumer can persist the messages.
 
 ---
 
