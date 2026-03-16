@@ -17,12 +17,17 @@ Backend for coworking space reservations and IoT telemetry.
    docker compose up -d --build
    ```
 
-3. **Migrations (first time or after schema changes)**
+3. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Migrations (first time or after schema changes)**
    ```bash
    npm run prisma:migrate
    ```
 
-4. **Seed** — One place, five spaces, 2–3 reservations per space, one MQTT telemetry message per space. For telemetry to be stored, the API must be running when you run the seed.
+5. **Seed** — One place, five spaces, 2–3 reservations per space, one MQTT telemetry message per space. For telemetry to be stored, the API must be running when you run the seed.
    ```bash
    npm run prisma:seed
    ```
