@@ -12,6 +12,8 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({ origin: process.env.CORS_ORIGIN, credentials: true });
+
   const config = new DocumentBuilder()
     .setTitle('SpaceFlow API')
     .setDescription('Backend system for managing coworking space reservations with IoT telemetry integration.')
