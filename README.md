@@ -52,6 +52,18 @@ Backend for coworking space reservations and IoT telemetry (NestJS, Prisma, Post
 
 ---
 
+## Seed
+
+Populates the DB with one place (Darien Technology Coworking), five spaces, one reservation per space, and publishes one MQTT telemetry message per space. Run migrations first, then:
+
+```bash
+npx prisma db seed
+```
+
+Or: `npm run prisma:seed`. For telemetry rows to be stored, the MQTT broker (and the API) must be running when you run the seed so the API consumer can persist the messages.
+
+---
+
 Protected endpoints need `Authorization: Bearer <AUTH_BEARER_TOKEN>` (see `.env.example`).
 
 ## Tests

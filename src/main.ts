@@ -11,8 +11,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
-  app.enableCors({ origin: process.env.CORS_ORIGIN, credentials: true });
+  const corsOrigin = process.env.CORS_ORIGIN ?? 'http://localhost:8080';
+  app.enableCors({
+    origin: corsOrigin.split(',').map((o) => o.trim()),
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('SpaceFlow API')
